@@ -1,4 +1,33 @@
-# -----------------------------------------------------------------------------
+# ---from midiutil import MIDIFile
+
+# Create a MIDI file with 2 tracks
+midi = MIDIFile(2)
+tempo = 95
+midi.addTempo(0, 0, tempo)
+midi.addTempo(1, 0, tempo)
+
+# Chord progression: Em - C - G - D
+chord_roots = [52, 48, 55, 50]  # E, C, G, D (in MIDI note values)
+chord_duration = 4  # 4 beats per chord (1 bar)
+
+# Track 0: Chords
+for i, root in enumerate(chord_roots * 2):  # Repeat progression twice
+    time = i * chord_duration
+    midi.addNote(0, 0, root, time, chord_duration, 70)
+    midi.addNote(0, 0, root + 3, time, chord_duration, 70)  # Minor third
+    midi.addNote(0, 0, root + 7, time, chord_duration, 70)  # Fifth
+
+# Track 1: Simple melody
+melody_notes = [64, 67, 69, 67, 64, 62, 64, 67]  # Melody in E minor
+for i, note in enumerate(melody_notes):
+    midi.addNote(1, 0, note, i, 0.75, 100)
+
+# Save MIDI file
+with open("mixed_signals_pop_demo.mid", "wb") as f:
+    midi.writeFile(f)
+
+print("Saved as mixed_signals_pop_demo.mid")
+--------------------------------------------------------------------------
 # Name:        MidiFile.py
 # Purpose:     MIDI file manipulation utilities
 #
